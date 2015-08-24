@@ -24,7 +24,9 @@ Motion::Project::App.setup do |app|
   app.files << File.join(lib_dir_path, "ProMotion/XLForm/validators/regex_validator.rb")
 
   app.pods do
-    pod 'XLForm', '~> 3.0.0'
+    pod "XLForm", :git => "git@github.com:markrickert/XLForm.git", :branch => "section_title_view"
+    # pod 'XLForm', '~> 3.0.0'
+
     pod 'RSColorPicker'
   end
 end

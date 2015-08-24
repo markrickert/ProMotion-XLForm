@@ -19,6 +19,13 @@ module ProMotion
       end
       section.multivaluedTag = tag
 
+      if view = section_data[:title_view]
+        view = section_data[:title_view].new if section_data[:title_view].respond_to?(:new)
+        view.on_load if view.respond_to?(:on_load)
+        view.title = section_data[:title] if view.respond_to?(:title=)
+
+        section.titleView = view
+      end
       section.footerTitle = section_data[:footer] if section_data[:footer]
 
       add_proc tag, :on_add, section_data[:on_add] if section_data[:on_add]
