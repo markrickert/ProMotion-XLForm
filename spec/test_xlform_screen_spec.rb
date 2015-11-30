@@ -17,13 +17,13 @@ describe 'ProMotion::XLFormScreen' do
     view("Some help text").should.not.be.nil
   end
 
-  it "contains 8 sections" do
-    views(UITableView).first.numberOfSections.should == 8
+  it "contains 9 sections" do
+    views(UITableView).first.numberOfSections.should == 9
   end
 
-  it "contains 1 section with 8 fields" do
+  it "contains 1 section with 9 fields" do
     tableview = views(UITableView).first
-    @form_screen.tableView(tableview, numberOfRowsInSection: 0).should == 8
+    @form_screen.tableView(tableview, numberOfRowsInSection: 0).should == 9
   end
 
   it "should not be valid" do
@@ -154,20 +154,25 @@ describe 'ProMotion::XLFormScreen' do
 
   it "should be customizable" do
     cell = @form_screen.cell_with_tag(:options)
-    cell.cellConfig["textLabel.font"].should == UIFont.fontWithName('Helvetica Neue', size: 15.0)
     cell.cellConfig["textLabel.textColor"].should == UIColor.greenColor
-    cell.cellConfig["detailTextLabel.font"].should == UIFont.fontWithName('Helvetica Neue', size: 12.0)
+
+    font = cell.cellConfig["textLabel.font"]
+    font.fontDescriptor.fontAttributes['NSFontNameAttribute'].should == 'HelveticaNeue'
+    font.fontDescriptor.fontAttributes['NSFontSizeAttribute'].should == 15
+
+    font = cell.cellConfig["detailTextLabel.font"]
+    font.fontDescriptor.fontAttributes['NSFontNameAttribute'].should == 'HelveticaNeue'
+    font.fontDescriptor.fontAttributes['NSFontSizeAttribute'].should == 12
+
     cell.cellConfig["detailTextLabel.textColor"].should == UIColor.blueColor
     cell.cellConfig["backgroundColor"].should == UIColor.grayColor
-
-    label = view('Options')
-    label.font.should == UIFont.fontWithName('Helvetica Neue', size: 15.0)
-    label.textColor.should == UIColor.greenColor
-    label.superview.superview.backgroundColor.should == UIColor.grayColor
 
     cell = @form_screen.cell_with_tag(:slider)
     cell.cellConfig["slider.tintColor"].should == UIColor.redColor
     views(UISlider).first.tintColor.should == UIColor.redColor
+
+    cell = @form_screen.cell_with_tag(:align)
+    cell.cellConfig["textField.textAlignment"].should == NSTextAlignmentRight
   end
 
   it "should allow a custom cell" do
