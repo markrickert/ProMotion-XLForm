@@ -21,10 +21,10 @@ module ProMotion
         end
 
         set_nav_bar_button :left, {
-                                  system_item: item,
-                                  title: title,
-                                  action: 'on_cancel:'
-                                }
+          system_item: item,
+          title: title,
+          action: 'on_cancel:'
+        }
       end
 
       if form_options[:on_save]
@@ -37,10 +37,17 @@ module ProMotion
         end
 
         set_nav_bar_button :right, {
-                                   system_item: item,
-                                   title: title,
-                                   action: 'on_save:'
-                                 }
+          system_item: item,
+          title: title,
+          action: 'on_save:'
+        }
+      end
+
+      # support for RMQ stylesheet using `form_view`
+      # this is not optimal since set_stylesheet is called from
+      # viewDidLoad on RMQ but the tableView is initialized only after that
+      if self.class.respond_to?(:rmq_style_sheet_class) && self.class.rmq_style_sheet_class
+        self.tableView.rmq.apply_style(:form_view) if self.rmq.stylesheet.respond_to?(:form_view)
       end
 
       self.form_added if self.respond_to?(:form_added)
@@ -55,12 +62,13 @@ module ProMotion
       form_options = self.class.get_form_options
       title = self.class.title
       required = form_options[:required]
+      auto_focus = form_options[:auto_focus]
 
       @form_builder = PM::XLForm.new(self.form_data,
-                                     {
-                                       title: title,
-                                       required: required
-                                     })
+                                     title: title,
+                                     required: required,
+                                     auto_focus: auto_focus
+      )
       @form_object = @form_builder.build
       self.form = @form_object
     end
@@ -262,7 +270,17 @@ module ProMotion
         if new_value.is_a? XLFormOptionsObject
           new_value = new_value.formValue
         end
-        callback.call(old_value, new_value)
+
+        case arity = callback.arity
+          when 0 then
+            callback.call
+          when 2 then
+            callback.call(old_value, new_value)
+          when 3 then
+            callback.call(old_value, new_value, row)
+          else
+            mp("Callback requires 0, 2, or 3 paramters", force_color: :red)
+        end
       end
     end
 

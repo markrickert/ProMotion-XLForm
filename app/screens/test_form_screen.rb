@@ -4,14 +4,15 @@ class TestFormScreen < PM::XLFormScreen
 
   form_options required: :asterisks,
                on_save: :'save_form:',
-               on_cancel: :cancel_form
+               on_cancel: :cancel_form,
+               auto_focus: true
 
   def form_data
     areas = [
-      { id: 'value_1',  name: 'Name 1' },
-      { id: 'value_2',  name: 'Name 2' },
-      { id: 'value_3',  name: 'Name 3' },
-      { id: 'value_4',  name: 'Name 4' },
+      { id: 'value_1', name: 'Name 1' },
+      { id: 'value_2', name: 'Name 2' },
+      { id: 'value_3', name: 'Name 3' },
+      { id: 'value_4', name: 'Name 4' },
     ]
 
     [
@@ -70,8 +71,8 @@ class TestFormScreen < PM::XLFormScreen
           },
           {
             title: 'Image',
-            name:  'image',
-            type:  :text,
+            name: 'image',
+            type: :text,
             image: "user",
           },
           {
@@ -117,7 +118,15 @@ class TestFormScreen < PM::XLFormScreen
               max: 100,
               min: 2,
               step: 4
-            }
+            },
+            # on_change: -> (old_value, new_value, row) {
+            #   mp old_value: old_value,
+            #      new_value: new_value
+            #   if old_value != new_value
+            #     row.setTitle("Slider at #{new_value}")
+            #     self.reloadFormRow(row)
+            #   end
+            # }
           },
           {
             title: 'A date',
@@ -131,6 +140,13 @@ class TestFormScreen < PM::XLFormScreen
             properties: {
               min: NSDate.new
             }
+          },
+          {
+            title: 'Pin',
+            name: :pin,
+            type: :password,
+            placeholder: 'Enter your 4-digit PIN',
+            keyboard_type: :decimal_pad
           },
           {
             title: 'Multiple',

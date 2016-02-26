@@ -113,7 +113,8 @@ class TestFormScreen < PM::XLFormScreen
 
   form_options required:  :asterisks, # add an asterisk to required fields
                on_save:   :'save_form:', # will be called when you touch save
-               on_cancel: :cancel_form # will be called when you touch cancel
+               on_cancel: :cancel_form, # will be called when you touch cancel
+               auto_focus: true # the form will focus on the first focusable field
 
    def save_form(values)
      dismiss_keyboard
@@ -170,10 +171,17 @@ You can also get a specific value with `value_for_cell(:my_cell)`.
     female: 'Female',
     other: 'Other'
   },
+  # An optional row paramater may be passed |old_value, new_value|
   on_change: lambda do |old_value, new_value|
     puts "Changed from #{old_value} to #{new_value}"
   end
 }
+# An optional row paramater may be passed to on_change:
+#  on_change: lambda do |old_value, new_value, row|
+#    puts "Changed from #{old_value} to #{new_value}"
+#    row.setTitle(new_value)
+#    self.reloadFormRow(row) if old_value != new_value
+#  end
 ```
 
 ### Multivalued Sections (Insert, Delete, Reorder rows)
@@ -403,6 +411,29 @@ You can also pass any key-value to configure your cell. Take a look at [this](ht
     "slider.tintColor" => UIColor.grayColor
   }
 }
+```
+
+### Keyboard
+For the text based cells (like `:text`, `:password`, `:number`, `:integer`, `:decimal`), you can specify a `keyboard_type`. The following keyboard types are available :
+- :default
+- :ascii
+- :numbers_punctuation
+- :url
+- :number_pad
+- :phone_pad
+- :name_phone_pad
+- :email
+- :decimal_pad
+- :twitter
+- :web_search
+- :alphabet
+
+### RMQ / RedPotion
+If you use [RMQ](https://github.com/infinitered/rmq) or [RedPotion](https://github.com/infinitered/redpotion), you can style the screen with
+```ruby
+def form_view(st)
+
+end
 ```
 
 ## Contributing
