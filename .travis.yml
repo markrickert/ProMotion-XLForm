@@ -1,15 +1,21 @@
 language: objective-c
 osx_image: xcode7
 before_install:
-    - mkdir -p ~/Library/RubyMotion
-    - (ruby --version)
-    - sudo chown -R travis ~/Library/RubyMotion
-    - mkdir -p ~/Library/RubyMotion/build
-    - sudo motion update
+  - mkdir -p ~/Library/RubyMotion
+  - "(ruby --version)"
+  - sudo chown -R travis ~/Library/RubyMotion
+  - mkdir -p ~/Library/RubyMotion/build
+  - sudo motion update
 gemfile:
   - Gemfile
 script:
-    - bundle install
-    - bundle exec rake pod:install > /dev/null
-    - bundle exec rake clean
-    - bundle exec rake spec
+  - bundle install
+  - bundle exec rake pod:install > /dev/null
+  - bundle exec rake clean
+  - bundle exec rake spec
+deploy:
+  provider: rubygems
+  api_key:
+    secure: nAqAXOkA2rU790Ywdm8XaJChsVGueiW3XwnVbOjhDwisfguaUXMSGiSNEVFcaNhcKz/T8Z2DxHVZbCIntVtsfZZGcN0NvsL+KksjCQDw0iBAp6s4E2F8VlD5+HaHfwx+UUK98m908nYd8ayqUCHMElDq566oPJ1z4uoKP9E9cfEsmH5ZXqYX3BusKR/AN+XDy2tg23AvKA8jS4lZh1tJ7oBJmcdIBJqg3Xiavsp37ktB+NQduBqZfAPWqF/xNFB4lN5/9b4/tFPIo27hDg94eu7ICuGgC3B8Gb6UfjwIYWU6rgrvo/zz2iYBMrpL90bP8rhV4NFXt9k/azBBThlOKolZPj/bzd7+f0iVOuhwWgnBTuuNL3Oe52px7c2PtJC5rxIeZSZqDJbcoj/XZFCsXX2+fB0KDojfOLUpY5WLaDABDyLJHiT1aP1Q1j3P2AHoB8U+ugXc+O7Mu0seF6WIXvZrrXCAdPOp7giYvlpDu7M39P7pg0IosUU+azjQgHMuLA+y2uOaXcTldD18OJ1jVWSQ0QEtaMxccahou3q4j7oE8qkasMEc7fwMxZ9hfOYudzDUiSWoXzB9MWxh6DfhSOrn4C+HlruNu7I7KinBl0LvbCGrUrBZ7uzXU3CU+5fDJthi3ifngpyRFNjYBoD8n8KIqqkC2/ggnRZKnwKZC1A=
+    on:
+      tags: true

@@ -27,7 +27,7 @@ Motion::Project::App.setup do |app|
 
   app.pods do
     pod "XLForm", :git => "git@github.com:markrickert/XLForm.git", :branch => "section_title_view"
-    # pod 'XLForm', :head
+    # pod 'XLForm', git: 'https://github.com/xmartlabs/XLForm.git'
     pod 'RSColorPicker'
   end
 end
