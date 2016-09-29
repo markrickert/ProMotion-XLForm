@@ -26,7 +26,7 @@ Motion::Project::App.setup do |app|
   app.files << File.join(lib_dir_path, "ProMotion/XLForm/ui_alert_controller.rb")
 
   app.pods do
-    pod "XLForm", :git => "git@github.com:markrickert/XLForm.git", :branch => "section_title_view"
+    pod 'XLForm', git: 'http://github.com/markrickert/XLForm.git', branch: 'section_title_view'
     # pod 'XLForm', '3.1.1'
     # pod 'XLForm', git: 'https://github.com/xmartlabs/XLForm.git'
     pod 'RSColorPicker'
